@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <odoo>
+            <data>
+            <menuitem id="customer_bills_root"
+                      name="Customer Bills"
+                      sequence="2"/>
+    <!--                  web_icon="fashion_system,static/description/icon.png"/>-->
+
+                <menuitem id="customer_customer_bill"
+                      name="Customer"
+                      sequence="2"
+                      parent="customer_bills.customer_bills_root"/>
+
+                <record id="view_customer_form" model="ir.ui.view">
+                    <field name="name">view.customer.form</field>
+                    <field name="model">market.product</field>
+                    <field name="arch" type="xml">
+                       <form string="Customer's Bills ">
+                           <header>
+                            <button type="object" name="calculate_total" string="Amount"/>
+                           <button name="%(customer_bills.action_view_gst_number_act)d" string="GST Number" type="action" class="btn btn-success"/>
+                           </header>
+                           <sheet>
+                               <group>
+                                   <group>
+                                        <group>
+                                            <field name="name" required="1"/>
+                                            <field name="quantity"/>
+                                            <field name="price"/>
+    <!--                                        <field name="calculate_total"/>-->
+                                        </group>
+                                        <group>
+                                            <field name="location"/>
+                                            <field name="total"/>
+                                            <field name="gst_number"/>
+<!--                                           <field name="amount"/>-->
+                                        </group>
+                                   </group>
+                               </group>
+                               <group name="Product" string="Bill Lines">
+                                        <field name="bill_lines_ids" nolable="1">
+                                        <tree editable="bottom">
+                                                <field name="product_name"/>
+                                                <field name="quantity"/>
+                                                <field name="unit_price"/>
+                                                <field name="total"/>
+    <!--                                            <field name="garment_type"/>-->
+                                        </tree>
+                                        </field>
+                               </group>
+                           </sheet>
+                       </form>
+                    </field>
+                </record>
+                <record id="view_customer_list" model="ir.ui.view">
+                <field name="name">view.customer.list</field>
+                <field name="model">market.product</field>
+                <field name="arch" type="xml">
+                    <tree string="Bills">
+                        <field name="name"/>
+                        <field name="quantity"/>
+                        <field name="price"/>
+                        <field name="location"/>
+                    </tree>
+                </field>
+            </record>
+                <record id="action_customer_bills" model="ir.actions.act_window">
+                    <field name="name">Customer Bills</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">market.product</field>
+                    <field name="view_mode">tree,form</field>
+                </record>
+
+                <record id="action_view_customer_tree" model="ir.actions.act_window.view">
+                    <field name="sequence" eval="1"/>
+                    <field name="view_mode">tree</field>
+                    <field name="view_id" ref="customer_bills.view_customer_list"/>
+                    <field name="act_window_id" ref="action_customer_bills"/>
+                </record>
+
+                <record id="view_action_customer_form" model="ir.actions.act_window.view">
+                <field name="sequence" eval="1"/>
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="customer_bills.view_customer_form"/>
+                <field name="act_window_id" ref="action_customer_bills"/>
+            </record>
+               <menuitem id="bills_customer_menu"
+                      name="Bills"
+                      sequence="2"
+                      parent="customer_bills.customer_customer_bill"
+                      action="customer_bills.action_customer_bills"/>
+            </data>
+        </odoo>
